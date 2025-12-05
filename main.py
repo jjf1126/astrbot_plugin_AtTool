@@ -14,8 +14,8 @@ class LLMAtToolPlugin(Star):
     @filter.llm_tool(name="mention_user")
     async def mention_user(self, event: AstrMessageEvent, user_id: str) -> str:
         """
-        生成一个用于艾特(At)指定用户的标签。
-        当你想在回复中艾特（又称提及，提醒、找、@等）某人时，请调用此工具，并将工具返回的字符串原样包含在你的最终回复中。
+        此工具生成一个用于艾特(At)指定用户的标签。
+        当你被要求或判断必须在回复中艾特（又称提及，提醒、找、@等）某人时，请调用此工具，并将工具返回的字符串原样包含在你的最终回复中。请注意非必要不调用
 
         Args:
             user_id (str): 用户的QQ号/ID (可以通过 get_group_members_info 工具获取)
