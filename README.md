@@ -1,7 +1,7 @@
 <div align="center">
 <img style="width:70%" src="https://count.getloli.com/@astrbot_plugin_AtTool?name=astrbot_plugin_AtTool&theme=booru&padding=5&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt=":name">
 
-# 好感度/关系管理插件
+# AstrBot LLM 艾特工具 (At Tool)
 
 <div align="left" style="width:70%">
 
