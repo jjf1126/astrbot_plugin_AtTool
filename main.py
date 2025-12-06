@@ -17,8 +17,9 @@ class LLMAtToolPlugin(Star):
     @filter.llm_tool(name="at_user")
     async def at_user(self, event: AstrMessageEvent, user_id: str) -> str:
         """
-        生成艾特(At)用户的标签。
+        生成艾特(At)用户的标签,并插入自然文本。
         仅在用户明确要求“艾特”、“提醒”、“呼叫”或“@”某人，或你判断必须引起特定群成员注意时调用。
+        执行完毕不会自动发送标签，必须由LLM主动插入LLM字段，作为纯文本输出。
         严禁单独输出标签，必须等待完整LLM回复字段并一同输出。
         Args:
             user_id(str): 用户的唯一识别标识(QQ号)，必须为阿拉伯数字字符串。
