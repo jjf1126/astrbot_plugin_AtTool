@@ -118,13 +118,12 @@ class LLMAtToolPlugin(Star):
         """
         拦截消息：
         1. 将 [at:123456] 转换为真实 At 组件。
-        2. 清除格式错误的 [at:xxx] 标签（除杂）。
+        2. (修改后) 不再清除格式错误的 [at:xxx] 标签。
         """
         result = event.get_result()
         if not result or not result.chain:
             return
 
-        # 快速检查是否有相关字符，避免无意义循环
         has_tag = False
         for comp in result.chain:
             if isinstance(comp, Plain) and "[at:" in comp.text:
@@ -147,28 +146,22 @@ class LLMAtToolPlugin(Star):
 
                     # 处理标签前的文本
                     if start > last_idx:
-                        pre_text = text[last_idx:start]
-                        # 移除那些长得像标签但不是合法ID的文本，例如 [at:unknown]
-                        pre_text = self.garbage_at_pattern.sub('', pre_text)
-                        if pre_text:
-                            new_chain.append(Plain(pre_text))
-
+                        # 只添加标签前的文本，不做任何过滤
+                        new_chain.append(Plain(text[last_idx:start]))
+                    
                     target_id = match.group(1)
                     
                     # 插入真实组件
                     new_chain.append(At(qq=target_id))
-                    new_chain.append(Plain("\u200b"))
+                    # 可以考虑在@后加一个空格，避免粘连
+                    new_chain.append(Plain(" "))
 
                     last_idx = end
 
-                # 处理剩余文本
+                # 处理最后一个标签后的剩余文本
                 if last_idx < len(text):
-                    remain_text = text[last_idx:]
-                    # 同样对剩余文本进行除杂
-                    remain_text = self.garbage_at_pattern.sub('', remain_text)
-                    if remain_text:
-                        new_chain.append(Plain(remain_text))
+                    new_chain.append(Plain(text[last_idx:]))
             else:
                 new_chain.append(comp)
-
+        
         result.chain = new_chain
