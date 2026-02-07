@@ -155,16 +155,13 @@ class LLMAtToolPlugin(Star):
                     new_chain.append(At(qq=target_id))
                     # 可以考虑在@后加一个空格，避免粘连
                     new_chain.append(Plain(" "))
+                    new_chain.append(Plain("\u200b"))
 
                     last_idx = end
 
                 # 处理最后一个标签后的剩余文本
                 if last_idx < len(text):
                     new_chain.append(Plain(text[last_idx:]))
-                    # --- 修改处：将空格合并到后续文本的开头 ---
-                    remaining_text = " " + text[last_idx:] 
-                    new_chain.append(Plain(remaining_text))
-            
             else:
                 new_chain.append(comp)
         
